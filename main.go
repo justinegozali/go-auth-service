@@ -29,10 +29,17 @@ func init() {
 }
 
 func main() {
-	err := godotenv.Load()
-  if err != nil {
-    log.Fatal("Error loading .env file")
-  }
+	// err := godotenv.Load()
+  // if err != nil {
+  //   log.Fatal("Error loading .env file")
+  // }
+
+	if os.Getenv("VERCEL") == "" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Println("Warning: Error loading .env file, using Vercel environment variables")
+		}
+	}
 
   port := os.Getenv("PORT")
 	if port == "" {
