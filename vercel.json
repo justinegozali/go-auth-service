@@ -4,10 +4,11 @@
       "GO_BUILD_FLAGS": "-ldflags '-s -w'"
     }
   },
+  "version": 2,
   "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/main.go"
+      "src": "/api/(.*)",
+      "dest": "/api/index.go"
     }
   ]
 }
