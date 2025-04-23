@@ -5,6 +5,7 @@ import (
 	"auth-service/routes"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -12,9 +13,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// func Handler(w http.ResponseWriter, r *http.Request) {
-// 	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
-// }
+func Handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
+}
 
 
 func init() {
