@@ -90,10 +90,10 @@ func Authenticate(c *gin.Context){
 
 	// Ngubah isloggedin dadi true
 	existingUser.Is_loggedIn = true
-	if err := config.DB.Save(&existingUser).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update login status"})
-		return
-	}
+	// if err := config.DB.Save(&existingUser).Error; err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update login status"})
+	// 	return
+	// }
 
 	// Nggawe token jwt
 	
@@ -134,6 +134,7 @@ func Authenticate(c *gin.Context){
 		"accessToken": tokenString,
 		"refreshToken": signedRefreshtoken,
 		"userID": existingUser.ID,
+		"roleID": existingUser.Role_id,
 	})
 }
 
@@ -147,6 +148,7 @@ func ShowAllUser(c *gin.Context){
 	}
 	c.JSON(http.StatusOK, users)
 }
+
 
 // Logout pengguna
 func Logout(c *gin.Context){

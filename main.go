@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -27,10 +28,23 @@ func main() {
 
 	r := gin.Default()
 
+	// CORS configuration
+	corsConfig := cors.Config{
+		AllowAllOrigins: true, // Allow all origins
+		// Alternatively, you can specify allowed origins:
+		// AllowOrigins: []string{"http://example.com", "http://anotherdomain.com"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+	}
+
+	r.Use(cors.New(corsConfig))
 	routeGroup := r.Group("/auth-service")
 	routes.Routes(routeGroup)
 	tokenRoutes := r.Group("/token")
 	routes.TokenRoutes(tokenRoutes)
+	roleRoutes := r.Group("/role-service")
+	routes.RoleRoutes(roleRoutes)
 	r.Run()
 }
 
