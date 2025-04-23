@@ -4,10 +4,10 @@
       "GO_BUILD_FLAGS": "-ldflags '-s -w'"
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/main"
+      "source": "/(.*)",
+      "destination": "/main.go"
     }
   ]
 }
