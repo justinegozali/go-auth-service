@@ -5,6 +5,7 @@ import (
 	"auth-service/routes"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -38,6 +39,8 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 	}
 
+	
+
 	r.Use(cors.New(corsConfig))
 	routeGroup := r.Group("/auth-service")
 	routes.Routes(routeGroup)
@@ -46,6 +49,10 @@ func main() {
 	roleRoutes := r.Group("/role-service")
 	routes.RoleRoutes(roleRoutes)
 	r.Run()
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
 }
 
 // CompileDaemon -command="./dummyservice"
