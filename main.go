@@ -5,7 +5,6 @@ import (
 	"auth-service/routes"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -13,24 +12,31 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	err := godotenv.Load()
-  if err != nil {
-    log.Fatal("Error loading .env file")
-  }
-	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
-}
+// func Handler(w http.ResponseWriter, r *http.Request) {
+// 	err := godotenv.Load()
+//   if err != nil {
+//     log.Fatal("Error loading .env file")
+//   }
+
+// }
 
 
 func init() {
 	 config.DatabaseCon()
 }
 
-func main() {
-	err := godotenv.Load()
-  if err != nil {
-    log.Fatal("Error loading .env file")
-  }
+func Handler() {
+	// err := godotenv.Load()
+  // if err != nil {
+  //   log.Fatal("Error loading .env file")
+  // }
+
+	if os.Getenv("VERCEL") == "" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Println("Warning: Error loading .env file, using Vercel environment variables")
+		}
+	}
 
   port := os.Getenv("PORT")
 	if port == "" {
