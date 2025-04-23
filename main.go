@@ -14,6 +14,10 @@ import (
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	err := godotenv.Load()
+  if err != nil {
+    log.Fatal("Error loading .env file")
+  }
 	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
 }
 
@@ -56,6 +60,7 @@ func main() {
 	routes.TokenRoutes(tokenRoutes)
 	roleRoutes := r.Group("/role-service")
 	routes.RoleRoutes(roleRoutes)
+	
 	// r.Run()
 	if err := r.Run(":" + port); err != nil {
 		log.Fatal("Failed to start server:", err)
