@@ -30,6 +30,8 @@ func UserCreate(c *gin.Context) {
 		return
 	}
 
+	// log.Printf(user.UserName)
+
 	// Nggoleki pengguna sing wis ana
 	var existingUser  models.User
     if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser ).Error; err == nil {
@@ -76,7 +78,7 @@ func Authenticate(c *gin.Context){
 			return
 	}
 
-	if err := config.DB.Where("is_logged_in = ?", user.Is_loggedIn).First(&existingUser).Error; err != nil {
+	if err := config.DB.Where("is_logged_in = ?", user.IsLoggedIn).First(&existingUser).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User is already logged in"})
 		return
 	}
@@ -89,7 +91,7 @@ func Authenticate(c *gin.Context){
 	}
 
 	// Ngubah isloggedin dadi true
-	existingUser.Is_loggedIn = true
+	existingUser.IsLoggedIn = true
 	// if err := config.DB.Save(&existingUser).Error; err != nil {
 	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update login status"})
 	// 	return
@@ -134,7 +136,7 @@ func Authenticate(c *gin.Context){
 		"accessToken": tokenString,
 		"refreshToken": signedRefreshtoken,
 		"userID": existingUser.ID,
-		"roleID": existingUser.Role_id,
+		"roleID": existingUser.RoleId,
 	})
 }
 
@@ -167,7 +169,7 @@ func Logout(c *gin.Context){
 	}
 	
 	// Ngubah status login dadi false
-	currentUser.Is_loggedIn = false
+	currentUser.IsLoggedIn = false
 	if err := config.DB.Save(&currentUser).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return
