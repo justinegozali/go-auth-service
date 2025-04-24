@@ -1,11 +1,10 @@
-package handler
+package main
 
 import (
 	"auth-service/config"
 	"auth-service/routes"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -13,15 +12,15 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
-	if os.Getenv("VERCEL") == "" {
-		err := godotenv.Load()
-		if err != nil {
-			log.Println("Warning: Error loading .env file, using Vercel environment variables")
-		}
-	}
-	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
-}
+// func Handler(w http.ResponseWriter, r *http.Request) {
+// 	if os.Getenv("VERCEL") == "" {
+// 		err := godotenv.Load()
+// 		if err != nil {
+// 			log.Println("Warning: Error loading .env file, using Vercel environment variables")
+// 		}
+// 	}
+// 	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
+// }
 
 
 func init() {
@@ -29,17 +28,10 @@ func init() {
 }
 
 func main() {
-	// err := godotenv.Load()
-  // if err != nil {
-  //   log.Fatal("Error loading .env file")
-  // }
-
-	if os.Getenv("VERCEL") == "" {
-		err := godotenv.Load()
-		if err != nil {
-			log.Println("Warning: Error loading .env file, using Vercel environment variables")
-		}
-	}
+	err := godotenv.Load()
+  if err != nil {
+    log.Fatal("Error loading .env file")
+  }
 
   port := os.Getenv("PORT")
 	if port == "" {
@@ -52,9 +44,7 @@ func main() {
 
 	// CORS configuration
 	corsConfig := cors.Config{
-		AllowAllOrigins: true, // Allow all origins
-		// Alternatively, you can specify allowed origins:
-		// AllowOrigins: []string{"http://example.com", "http://anotherdomain.com"},
+		AllowAllOrigins: true, 
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -70,10 +60,10 @@ func main() {
 	roleRoutes := r.Group("/role-service")
 	routes.RoleRoutes(roleRoutes)
 	
-	// r.Run()
-	if err := r.Run(":" + port); err != nil {
-		log.Fatal("Failed to start server:", err)
-	}
+	r.Run()
+	// if err := r.Run(":" + port); err != nil {
+	// 	log.Fatal("Failed to start server:", err)
+	// }
 }
 
 // CompileDaemon -command="./dummyservice"
