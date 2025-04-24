@@ -66,4 +66,4 @@ func main() {
 	// }
 }
 
-// CompileDaemon -command="./dummyservice"
+// CompileDaemon -command="./auth-service"
