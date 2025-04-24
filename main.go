@@ -22,6 +22,8 @@ import (
 // 	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
 // }
 
+// makan oreg tempe
+
 
 func init() {
 	 config.DatabaseCon()
