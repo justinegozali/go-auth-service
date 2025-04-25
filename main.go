@@ -4,12 +4,10 @@ import (
 	"auth-service/config"
 	"auth-service/routes"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 // func Handler(w http.ResponseWriter, r *http.Request) {
@@ -25,13 +23,10 @@ import (
 
 func init() {
 	 config.DatabaseCon()
+	 config.EnvInit()
 }
 
 func main() {
-	err := godotenv.Load()
-  if err != nil {
-    log.Fatal("Error loading .env file")
-  }
 
   port := os.Getenv("PORT")
 	if port == "" {
@@ -59,6 +54,8 @@ func main() {
 	routes.TokenRoutes(tokenRoutes)
 	roleRoutes := r.Group("/role-service")
 	routes.RoleRoutes(roleRoutes)
+	memberRoutes := r.Group("/member-service")
+	routes.MemberRoutes(memberRoutes)
 	
 	r.Run()
 	// if err := r.Run(":" + port); err != nil {

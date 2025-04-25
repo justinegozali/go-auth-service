@@ -3,19 +3,14 @@ package controllers
 import (
 	"auth-service/config"
 	"auth-service/models"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
 
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error load .env file")
-	}
+	config.EnvInit()
 }
 
 func CreateRole(c *gin.Context) {

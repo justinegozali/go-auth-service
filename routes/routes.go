@@ -22,3 +22,9 @@ func RoleRoutes(r *gin.RouterGroup){
 	r.POST("/role", controllers.CreateRole)
 	r.PUT("/role/:id", controllers.EditRole)
 }
+
+func MemberRoutes(r *gin.RouterGroup){
+	r.POST("/member", controllers.CreateMember)
+	r.GET("/member", controllers.ShowAllMember)
+	r.PUT("/member/:id", controllers.UpdateMember)
+}
