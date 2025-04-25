@@ -20,7 +20,6 @@ import (
 // 	fmt.Fprintf(w, "<h1>Hello from Go!</h1>")
 // }
 
-
 func init() {
 	 config.DatabaseCon()
 	 config.EnvInit()
@@ -28,7 +27,7 @@ func init() {
 
 func main() {
 
-  port := os.Getenv("PORT")
+	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
@@ -39,13 +38,11 @@ func main() {
 
 	// CORS configuration
 	corsConfig := cors.Config{
-		AllowAllOrigins: true, 
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:    []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:   []string{"Content-Length"},
 	}
-
-	
 
 	r.Use(cors.New(corsConfig))
 	routeGroup := r.Group("/auth-service")

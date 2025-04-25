@@ -29,11 +29,11 @@ func UserCreate(c *gin.Context) {
 
 	// Nggoleki pengguna sing wis ana
 	var existingUser  models.User
-    if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser ).Error; err == nil {
-        
-			c.JSON(http.StatusConflict, gin.H{"error": "User  with this username already exists"})
-			return
-    }
+	if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser ).Error; err == nil {
+			
+		c.JSON(http.StatusConflict, gin.H{"error": "User  with this username already exists"})
+		return
+	}
 
 	// Ngubah sandi dadi hash
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)

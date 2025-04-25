@@ -3,6 +3,7 @@ package controllers
 import (
 	"auth-service/config"
 	"auth-service/models"
+	"auth-service/payloads"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,28 +15,31 @@ func init() {
 }
 
 func CreateRole(c *gin.Context) {
-	var role models.Role
-
-	if err := c.ShouldBindBodyWithJSON(&role); err != nil {
+	var request payloads.CreateRoleRequest
+	if err := c.ShouldBindBodyWithJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	var existingRole models.Role
-	if err := config.DB.Where("name = ?", role.Name).First(&existingRole).Error; err == nil {
+	if err := config.DB.Where("name = ?", request.Name).First(&existingRole).Error; err == nil {
 		c.JSON(http.StatusConflict, gin.H{"error": "Role already exist"})
 		return
 	}
 
-	if err := config.DB.Create(&role).Error; err != nil {
+	var response payloads.CreateRoleResponse
+	role := models.Role{
+		Name: request.Name,
+	}
+	if err := config.DB.Create(&role).Scan(&response).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create role"})
 		return
 	}
 
-	c.JSON(http.StatusCreated, role)
+	c.JSON(http.StatusCreated, response)
 }
 
-func EditRole(c *gin.Context){
+func EditRole(c *gin.Context) {
 	var role models.Role
 
 	if err := c.ShouldBindBodyWithJSON(&role); err != nil {
