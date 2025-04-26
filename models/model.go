@@ -24,4 +24,5 @@ type Member struct {
 	Keterangan        string `json:"keterangan"`
 	IsBlackList       bool   `gorm:"default:false" json:"is_black_list"`
 	TanggalKadaluarsa string `gorm:"type:date" json:"tanggal_kadaluarsa"`
+	IsActive          bool   `gorm:"default:true" json:"is_active"`
 }

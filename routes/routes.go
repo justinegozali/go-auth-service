@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Routes(r *gin.RouterGroup){
+func Routes(r *gin.RouterGroup) {
 	r.POST("/regist-user", controllers.UserCreate)
 	r.POST("/login", controllers.Authenticate)
 	r.POST("/logout", controllers.Logout)
@@ -14,17 +14,18 @@ func Routes(r *gin.RouterGroup){
 	r.GET("/user", controllers.ShowAllUser)
 }
 
-func TokenRoutes(r *gin.RouterGroup){
+func TokenRoutes(r *gin.RouterGroup) {
 	r.POST("/refresh-access-token", controllers.RefreshToken)
 }
 
-func RoleRoutes(r *gin.RouterGroup){
+func RoleRoutes(r *gin.RouterGroup) {
 	r.POST("/role", controllers.CreateRole)
 	r.PUT("/role/:id", controllers.EditRole)
 }
 
-func MemberRoutes(r *gin.RouterGroup){
+func MemberRoutes(r *gin.RouterGroup) {
 	r.POST("/member", controllers.CreateMember)
 	r.GET("/member", controllers.ShowAllMember)
 	r.PUT("/member/:id", controllers.UpdateMember)
+	r.PUT("/delete-member/:id", controllers.SoftDeleteMember)
 }
