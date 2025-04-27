@@ -17,7 +17,6 @@ func init() {
 
 	router = gin.Default()
 
-	// CORS configuration
 	corsConfig := cors.Config{
 		AllowAllOrigins: true,
 		AllowMethods:    []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -26,12 +25,10 @@ func init() {
 	}
 	router.Use(cors.New(corsConfig))
 
-	// Add welcome route
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Welcome to Golang Backend")
 	})
 
-	// Grouped routes
 	routeGroup := router.Group("/auth-service")
 	routes.Routes(routeGroup)
 
@@ -45,7 +42,6 @@ func init() {
 	routes.MemberRoutes(memberRoutes)
 }
 
-// 👇 THIS IS THE CRITICAL EXPORT
 func Handler(w http.ResponseWriter, r *http.Request) {
 	router.ServeHTTP(w, r)
 }
