@@ -3,20 +3,19 @@ package main
 import (
 	"auth-service/config"
 	"auth-service/routes"
+	"net/http"
 
-	"github.com/aws/aws-lambda-go/events"
-	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin" // Import for adapting Gin to serverless
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-var ginLambda *ginadapter.GinLambda
+var router *gin.Engine
 
 func init() {
 	config.DatabaseCon()
 	config.EnvInit()
 
-	r := gin.Default()
+	router = gin.Default()
 
 	// CORS configuration
 	corsConfig := cors.Config{
@@ -25,28 +24,28 @@ func init() {
 		AllowHeaders:    []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:   []string{"Content-Length"},
 	}
-	r.Use(cors.New(corsConfig))
+	router.Use(cors.New(corsConfig))
 
-	r.GET("/", func(c *gin.Context) {
-		c.String(200, "Hello from Golang")
+	// Add welcome route
+	router.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "Welcome to Golang Backend")
 	})
 
-	routeGroup := r.Group("/auth-service")
+	// Grouped routes
+	routeGroup := router.Group("/auth-service")
 	routes.Routes(routeGroup)
 
-	tokenRoutes := r.Group("/token")
+	tokenRoutes := router.Group("/token")
 	routes.TokenRoutes(tokenRoutes)
 
-	roleRoutes := r.Group("/role-service")
+	roleRoutes := router.Group("/role-service")
 	routes.RoleRoutes(roleRoutes)
 
-	memberRoutes := r.Group("/member-service")
+	memberRoutes := router.Group("/member-service")
 	routes.MemberRoutes(memberRoutes)
-
-	// Here we initialize the Gin Lambda adapter
-	ginLambda = ginadapter.New(r)
 }
 
-func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	return ginLambda.Proxy(req)
+// 👇 THIS IS THE CRITICAL EXPORT
+func Handler(w http.ResponseWriter, r *http.Request) {
+	router.ServeHTTP(w, r)
 }
