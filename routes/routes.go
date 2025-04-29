@@ -28,4 +28,5 @@ func MemberRoutes(r *gin.RouterGroup) {
 	r.GET("/member", controllers.ShowAllMember)
 	r.PUT("/member/:id", controllers.UpdateMember)
 	r.PUT("/delete-member/:id", controllers.SoftDeleteMember)
+	r.GET("/paginated-member", controllers.PaginatedMember)
 }
