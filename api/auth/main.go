@@ -40,6 +40,9 @@ func init() {
 
 	memberRoutes := router.Group("/member-service")
 	routes.MemberRoutes(memberRoutes)
+
+	strukRoutes := router.Group("/struk-service")
+	routes.StrukRoutes(strukRoutes)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
