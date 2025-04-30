@@ -30,3 +30,7 @@ func MemberRoutes(r *gin.RouterGroup) {
 	r.PUT("/delete-member/:id", controllers.SoftDeleteMember)
 	r.GET("/paginated-member", controllers.PaginatedMember)
 }
+
+func StrukRoutes(r *gin.RouterGroup) {
+	r.POST("/struk", controllers.CreateStruk)
+}

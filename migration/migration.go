@@ -10,7 +10,7 @@ func init() {
 }
 
 func main() {
-	err := config.DB.AutoMigrate( &models.Role{}, &models.User{}, &models.Member{})
+	err := config.DB.AutoMigrate(&models.Role{}, &models.User{}, &models.Member{}, &models.StrukMember{})
 	if err != nil {
 		panic("Failed to migrate: " + err.Error())
 	}

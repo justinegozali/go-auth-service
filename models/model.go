@@ -26,3 +26,19 @@ type Member struct {
 	TanggalKadaluarsa string `gorm:"type:date" json:"tanggal_kadaluarsa"`
 	IsActive          bool   `gorm:"default:true" json:"is_active"`
 }
+
+type StrukMember struct {
+	ID                   uint   `gorm:"primaryKey" json:"id"`
+	MemberId             int    `json:"member_id"`
+	Member               Member `gorm:"foreignKey:MemberId" json:"-"`
+	NomorPolisi          string `json:"nomor_polisi"`
+	NamaPemilik          string `json:"nama_pemilik"`
+	TanggalMasuk         string `json:"tanggal_masuk"`
+	KadaluarsaSebelumnya string `gorm:"type:date" json:"kadaluarsa_sebelumnya"`
+	KadaluarsaBerikutnya string `gorm:"type:date" json:"kadaluarsa_berikutnya"`
+	TarifBulanan         int    `json:"tarif_bulanan"`
+	TanggalBayar         string `json:"tanggal_bayar"`
+	JangkaWaktu          int    `json:"jangka_waktu"`
+	JumlahPembayaran     int    `json:"jumlah_pembayaran"`
+	Keterangan           string `json:"keterangan"`
+}

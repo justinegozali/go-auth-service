@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func Init() {
+func init() {
 	config.EnvInit()
 }
 
@@ -147,30 +147,26 @@ func PaginatedMember(c *gin.Context) {
 	var members []models.Member
 	var totalMembers int64
 
-	// Get pagination parameters from query string
 	pageStr := c.Query("page")
 	limitStr := c.Query("limit")
 
-	// Set default values for page and limit
 	page := 1
 	limit := 10
 
-	// Parse page and limit from query parameters
 	if pageStr != "" {
 		if p, err := strconv.Atoi(pageStr); err == nil && p > 0 {
 			page = p
 		}
 	}
+
 	if limitStr != "" {
 		if l, err := strconv.Atoi(limitStr); err == nil && l > 0 {
 			limit = l
 		}
 	}
 
-	// Calculate offset
 	offset := (page - 1) * limit
 
-	// Get total number of members
 	if err := config.DB.Model(&models.Member{}).Count(&totalMembers).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching total members count",
@@ -179,7 +175,6 @@ func PaginatedMember(c *gin.Context) {
 		return
 	}
 
-	// Fetch paginated members
 	if err := config.DB.Offset(offset).Limit(limit).Find(&members).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching data",
@@ -188,7 +183,6 @@ func PaginatedMember(c *gin.Context) {
 		return
 	}
 
-	// Return paginated data
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Successfully fetched data",
 		"data":    members,

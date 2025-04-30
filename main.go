@@ -21,8 +21,8 @@ import (
 // }
 
 func init() {
-	 config.DatabaseCon()
-	 config.EnvInit()
+	config.DatabaseCon()
+	config.EnvInit()
 }
 
 func main() {
@@ -53,7 +53,9 @@ func main() {
 	routes.RoleRoutes(roleRoutes)
 	memberRoutes := r.Group("/member-service")
 	routes.MemberRoutes(memberRoutes)
-	
+	strukRoutes := r.Group("/struk-service")
+	routes.StrukRoutes(strukRoutes)
+
 	r.Run()
 	// if err := r.Run(":" + port); err != nil {
 	// 	log.Fatal("Failed to start server:", err)
