@@ -167,7 +167,7 @@ func PaginatedMember(c *gin.Context) {
 
 	offset := (page - 1) * limit
 
-	if err := config.DB.Model(&models.Member{}).Count(&totalMembers).Error; err != nil {
+	if err := config.DB.Model(&models.Member{}).Where("is_active = ?", true).Count(&totalMembers).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching total members count",
 			"data":    nil,
@@ -175,7 +175,7 @@ func PaginatedMember(c *gin.Context) {
 		return
 	}
 
-	if err := config.DB.Offset(offset).Limit(limit).Find(&members).Error; err != nil {
+	if err := config.DB.Where("is_active = ?", true).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching data",
 			"data":    nil,
