@@ -177,11 +177,13 @@ func Logout(c *gin.Context) {
 func GetUserRoleViews(c *gin.Context) {
 	var userRoleViews []models.UserRoleView
 
-	// Use Table method to query from the view
 	if err := config.DB.Table("user_role_view").Find(&userRoleViews).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user role views: " + err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, userRoleViews)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Success fetching use view",
+		"data":    userRoleViews,
+	})
 }
