@@ -12,6 +12,7 @@ func Routes(r *gin.RouterGroup) {
 	r.POST("/logout", controllers.Logout)
 	// r.GET("/user", middleware.ValidateToken ,controllers.ShowAllUser)
 	r.GET("/user", controllers.ShowAllUser)
+	r.GET("/user-view", controllers.GetUserRoleViews)
 }
 
 func TokenRoutes(r *gin.RouterGroup) {

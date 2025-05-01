@@ -42,3 +42,11 @@ type StrukMember struct {
 	JumlahPembayaran     int    `json:"jumlah_pembayaran"`
 	Keterangan           string `json:"keterangan"`
 }
+
+type UserRoleView struct {
+	UserID     uint   `json:"user_id"`
+	UserName   string `json:"user_name"`
+	Password   string `json:"password"`
+	IsLoggedIn bool   `json:"is_logged_in"`
+	RoleName   string `json:"role_name"`
+}

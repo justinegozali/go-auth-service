@@ -28,9 +28,9 @@ func UserCreate(c *gin.Context) {
 	// log.Printf(user.UserName)
 
 	// Nggoleki pengguna sing wis ana
-	var existingUser  models.User
-	if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser ).Error; err == nil {
-			
+	var existingUser models.User
+	if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser).Error; err == nil {
+
 		c.JSON(http.StatusConflict, gin.H{"error": "User  with this username already exists"})
 		return
 	}
@@ -51,26 +51,26 @@ func UserCreate(c *gin.Context) {
 	if err := config.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
 		return
-	}	
+	}
 
 	c.JSON(http.StatusCreated, user)
 }
 
 // Authenticate penggguna
-func Authenticate(c *gin.Context){
+func Authenticate(c *gin.Context) {
 	var user models.User
-	
+
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	// Nggoleki user nang jero DB
-	var existingUser  models.User
-	if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser ).Error; err != nil {
-			
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Username not found"})
-			return
+	var existingUser models.User
+	if err := config.DB.Where("user_name = ?", user.UserName).First(&existingUser).Error; err != nil {
+
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Username not found"})
+		return
 	}
 
 	if err := config.DB.Where("is_logged_in = ?", user.IsLoggedIn).First(&existingUser).Error; err != nil {
@@ -93,7 +93,7 @@ func Authenticate(c *gin.Context){
 	// }
 
 	// Nggawe token jwt
-	
+
 	// Access token
 	accesstoken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": existingUser.ID,
@@ -112,7 +112,7 @@ func Authenticate(c *gin.Context){
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to create token"+ err.Error(),
+			"error": "Failed to create token" + err.Error(),
 		})
 		return
 	}
@@ -121,22 +121,22 @@ func Authenticate(c *gin.Context){
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to create token"+ err.Error(),
+			"error": "Failed to create token" + err.Error(),
 		})
 		return
 	}
 
 	// kirim respon
 	c.JSON(http.StatusOK, gin.H{
-		"accessToken": tokenString,
+		"accessToken":  tokenString,
 		"refreshToken": signedRefreshtoken,
-		"userID": existingUser.ID,
-		"roleID": existingUser.RoleId,
+		"userID":       existingUser.ID,
+		"roleID":       existingUser.RoleId,
 	})
 }
 
 // Nampilake pengguna kabeh
-func ShowAllUser(c *gin.Context){
+func ShowAllUser(c *gin.Context) {
 	var users []models.User
 
 	if err := config.DB.Find(&users).Error; err != nil {
@@ -146,9 +146,8 @@ func ShowAllUser(c *gin.Context){
 	c.JSON(http.StatusOK, users)
 }
 
-
 // Logout pengguna
-func Logout(c *gin.Context){
+func Logout(c *gin.Context) {
 	var user models.User
 
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -157,12 +156,12 @@ func Logout(c *gin.Context){
 	}
 
 	// Nggoleki user miturut Id
-	var currentUser  models.User
-	if err := config.DB.First(&currentUser , user.ID).Error; err != nil {
+	var currentUser models.User
+	if err := config.DB.First(&currentUser, user.ID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User  not found"})
 		return
 	}
-	
+
 	// Ngubah status login dadi false
 	currentUser.IsLoggedIn = false
 	if err := config.DB.Save(&currentUser).Error; err != nil {
@@ -173,4 +172,16 @@ func Logout(c *gin.Context){
 	c.JSON(http.StatusOK, gin.H{
 		"message": "User is successfully logged out",
 	})
+}
+
+func GetUserRoleViews(c *gin.Context) {
+	var userRoleViews []models.UserRoleView
+
+	// Use Table method to query from the view
+	if err := config.DB.Table("user_role_view").Find(&userRoleViews).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user role views: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, userRoleViews)
 }
