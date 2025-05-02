@@ -4,6 +4,7 @@ import (
 	"auth-service/config"
 	"auth-service/models"
 	"auth-service/payloads"
+	"log"
 	"math"
 	"net/http"
 	"strconv"
@@ -150,6 +151,31 @@ func PaginatedMember(c *gin.Context) {
 	pageStr := c.Query("page")
 	limitStr := c.Query("limit")
 
+	params := c.Request.URL.Query()
+
+	formattedParams := make(map[string]interface{})
+
+	for key, vals := range params {
+		if key == "limit" || key == "page" {
+			continue // exclude pagination params
+		}
+		if len(vals) == 0 {
+			continue
+		}
+		value := vals[0]
+		if intVal, err := strconv.Atoi(value); err == nil {
+			formattedParams[key] = intVal
+		} else if value == "true" {
+			formattedParams[key] = true
+		} else if value == "false" {
+			formattedParams[key] = false
+		} else {
+			formattedParams[key] = value
+		}
+	}
+
+	log.Printf("Received query params: %v", formattedParams)
+
 	page := 1
 	limit := 10
 
@@ -167,7 +193,7 @@ func PaginatedMember(c *gin.Context) {
 
 	offset := (page - 1) * limit
 
-	if err := config.DB.Model(&models.Member{}).Where("is_active = ?", true).Count(&totalMembers).Error; err != nil {
+	if err := config.DB.Model(&models.Member{}).Where(formattedParams).Count(&totalMembers).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching total members count",
 			"data":    nil,
@@ -175,7 +201,7 @@ func PaginatedMember(c *gin.Context) {
 		return
 	}
 
-	if err := config.DB.Where("is_active = ?", true).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
+	if err := config.DB.Where(formattedParams).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching data",
 			"data":    nil,

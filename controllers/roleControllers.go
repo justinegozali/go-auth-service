@@ -69,3 +69,17 @@ func EditRole(c *gin.Context) {
 	// Return the updated role
 	c.JSON(http.StatusOK, existingRole)
 }
+
+func ShowAllRole(c *gin.Context) {
+	var Roles []models.Role
+	if err := config.DB.Find(&Roles).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error fetching roles",
+			"data":    nil,
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Roles fetched successfully",
+		"data":    Roles,
+	})
+}

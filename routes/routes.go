@@ -21,6 +21,7 @@ func TokenRoutes(r *gin.RouterGroup) {
 
 func RoleRoutes(r *gin.RouterGroup) {
 	r.POST("/role", controllers.CreateRole)
+	r.GET("/role", controllers.ShowAllRole)
 	r.PUT("/role/:id", controllers.EditRole)
 }
 

@@ -1,17 +1,17 @@
 package models
 
 type User struct {
-	ID         uint `gorm:"primaryKey"`
-	UserName   string
-	Password   string
-	RoleId     int
-	IsLoggedIn bool `gorm:"default:false"`
-	Role       Role `gorm:"foreignKey:RoleId" json:"-"`
+	ID         uint   `gorm:"primaryKey" json:"id"`
+	UserName   string `json:"user_name"`
+	Password   string `json:"password"`
+	RoleId     int    `json:"role_id"`
+	IsLoggedIn bool   `gorm:"default:false"`
+	Role       Role   `gorm:"foreignKey:RoleId" json:"-"`
 }
 
 type Role struct {
-	ID   uint `gorm:"primaryKey"`
-	Name string
+	ID   uint   `gorm:"primaryKey"`
+	Name string `gorm:"name"`
 }
 
 type Member struct {
