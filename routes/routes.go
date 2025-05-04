@@ -13,6 +13,8 @@ func Routes(r *gin.RouterGroup) {
 	// r.GET("/user", middleware.ValidateToken ,controllers.ShowAllUser)
 	r.GET("/user", controllers.ShowAllUser)
 	r.GET("/user-view", controllers.GetUserRoleViews)
+	r.PUT("/user/:id", controllers.UpdateUser)
+	r.DELETE("/user/:id", controllers.DeleteUser)
 }
 
 func TokenRoutes(r *gin.RouterGroup) {
