@@ -100,14 +100,14 @@ func Authenticate(c *gin.Context) {
 	// Access token
 	accesstoken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": existingUser.ID,
-		"exp": time.Now().Add(1 * time.Minute).Unix(),
+		"exp": time.Now().Add(10 * time.Minute).Unix(),
 	})
 
 	// Refresh token
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": existingUser.ID,
-		"exp": time.Now().Add(1 * time.Hour).Unix(),
-	})
+	// refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	// 	"sub": existingUser.ID,
+	// 	"exp": time.Now().Add(1 * time.Hour).Unix(),
+	// })
 
 	// Nandhatangani akses token
 	secretSign := os.Getenv("SECRET")
@@ -120,21 +120,21 @@ func Authenticate(c *gin.Context) {
 		return
 	}
 
-	signedRefreshtoken, err := refreshToken.SignedString([]byte(secretSign))
+	// signedRefreshtoken, err := refreshToken.SignedString([]byte(secretSign))
 
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to create token" + err.Error(),
-		})
-		return
-	}
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{
+	// 		"error": "Failed to create token" + err.Error(),
+	// 	})
+	// 	return
+	// }
 
 	// kirim respon
 	c.JSON(http.StatusOK, gin.H{
-		"accessToken":  tokenString,
-		"refreshToken": signedRefreshtoken,
-		"userID":       existingUser.ID,
-		"roleID":       existingUser.RoleId,
+		"accessToken": tokenString,
+		// "refreshToken": signedRefreshtoken,
+		"userID": existingUser.ID,
+		"roleID": existingUser.RoleId,
 	})
 }
 
@@ -220,13 +220,6 @@ func UpdateUser(c *gin.Context) {
 	if err := bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(user.Password)); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Password is not valid"})
 		return
-	}
-
-	if err := config.DB.Where("user_name = ? ", user.UserName).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusConflict, gin.H{
-			"message": "Username already exist",
-			"data":    nil,
-		})
 	}
 
 	if is_change_password == "false" {

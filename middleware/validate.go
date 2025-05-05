@@ -4,7 +4,6 @@ import (
 	"auth-service/config"
 	"auth-service/models"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -18,8 +17,8 @@ func init() {
 	config.EnvInit()
 }
 
-func ValidateToken(c *gin.Context){
-	// tokenString, err := c.Cookie("Authorization")
+func ValidateToken(c *gin.Context) {
+
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
 		c.AbortWithStatus(http.StatusUnauthorized)
@@ -33,28 +32,25 @@ func ValidateToken(c *gin.Context){
 		return
 	}
 
-	// if err != nil {
-	// 	c.AbortWithStatus(http.StatusUnauthorized)
-	// }
-
 	// Decode jwt
-	hmacSampleSecret:=os.Getenv("SECRET")
+	hmacSampleSecret := os.Getenv("SECRET")
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Don't forget to validate the alg is what you expect:
+		
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-	
-		// hmacSampleSecret is a []byte containing your secret, e.g. []byte("my_secret_key")
+
 		return []byte(hmacSampleSecret), nil
 	})
 	if err != nil {
-		log.Fatal(err)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": err.Error(),
+		})
 	}
-	
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
 		// Check the exp
-		if float64(time.Now().Unix()) > claims["exp"].(float64){
+		if float64(time.Now().Unix()) > claims["exp"].(float64) {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		}
 
