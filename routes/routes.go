@@ -8,7 +8,7 @@ import (
 )
 
 func Routes(r *gin.RouterGroup) {
-	r.POST("/regist-user", middleware.ValidateToken, controllers.UserCreate)
+	r.POST("/regist-user", controllers.UserCreate)
 	r.POST("/login", controllers.Authenticate)
 	r.POST("/logout", middleware.ValidateToken, controllers.Logout)
 	r.GET("/user", middleware.ValidateToken, controllers.ShowAllUser)
@@ -22,7 +22,7 @@ func TokenRoutes(r *gin.RouterGroup) {
 }
 
 func RoleRoutes(r *gin.RouterGroup) {
-	r.POST("/role", middleware.ValidateToken, controllers.CreateRole)
+	r.POST("/role", controllers.CreateRole)
 	r.GET("/role", middleware.ValidateToken, controllers.ShowAllRole)
 	r.PUT("/role/:id", middleware.ValidateToken, controllers.EditRole)
 }
