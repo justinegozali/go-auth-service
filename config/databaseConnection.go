@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +28,7 @@ func init() {
 func DatabaseCon() {
 	var err error
 	dsn := os.Getenv("DATABASE_URL")
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	fmt.Println("DSN", dsn)
 	if dsn == "" {
 		log.Fatal("DATABASE_URL environment variable is not set")

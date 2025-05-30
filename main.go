@@ -55,6 +55,12 @@ func main() {
 	routes.MemberRoutes(memberRoutes)
 	strukRoutes := r.Group("/struk-service")
 	routes.StrukRoutes(strukRoutes)
+	ocrRoutes := r.Group("/ocr-service")
+	routes.OcrRoutes(ocrRoutes)
+	notificationRoutes := r.Group("/notification")
+	routes.NotificationRoutes(notificationRoutes)
+	jenisKendaraanRoutes := r.Group("/jenis-kendaraan-service")
+	routes.JenisKendaraanRoutes(jenisKendaraanRoutes)
 
 	r.Run()
 	// if err := r.Run(":" + port); err != nil {

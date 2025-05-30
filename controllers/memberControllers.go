@@ -145,7 +145,7 @@ func SoftDeleteMember(c *gin.Context) {
 }
 
 func PaginatedMember(c *gin.Context) {
-	var members []models.Member
+	var members []models.MemberView
 	var totalMembers int64
 
 	pageStr := c.Query("page")
@@ -193,7 +193,7 @@ func PaginatedMember(c *gin.Context) {
 
 	offset := (page - 1) * limit
 
-	if err := config.DB.Model(&models.Member{}).Where(formattedParams).Count(&totalMembers).Error; err != nil {
+	if err := config.DB.Table("member_view").Where(formattedParams).Count(&totalMembers).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching total members count",
 			"data":    nil,
@@ -201,7 +201,7 @@ func PaginatedMember(c *gin.Context) {
 		return
 	}
 
-	if err := config.DB.Where(formattedParams).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
+	if err := config.DB.Table("member_view").Where(formattedParams).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching data",
 			"data":    nil,

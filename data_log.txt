@@ -1,0 +1,60 @@
+2025/05/27 00:58:38 Scanned at: 2025-05-27T00:58:38.517609
+2025/05/27 00:58:38 Detected text: 4, Probability: 0.89
+2025/05/27 00:58:38 Detected text: 1185, Probability: 1.00
+2025/05/27 00:58:38 Detected text: DD, Probability: 1.00
+2025/05/27 23:45:02 Scanned at: 2025-05-27T23:45:02.886720
+2025/05/27 23:45:02 Detected text: 4, Probability: 0.89
+2025/05/27 23:45:02 Detected text: 1185, Probability: 1.00
+2025/05/27 23:45:02 Detected text: DD, Probability: 1.00
+2025/05/27 23:49:21 Scanned at: 2025-05-27T23:49:21.754054
+2025/05/27 23:49:21 Detected text: 4, Probability: 0.89
+2025/05/27 23:49:21 Detected text: 1185, Probability: 1.00
+2025/05/27 23:49:21 Detected text: DD, Probability: 1.00
+2025/05/28 00:02:32 Scanned at: 2025-05-28T00:02:32.050480
+2025/05/28 00:02:32 Detected text: 4, Probability: 0.89
+2025/05/28 00:02:32 Detected text: 1185, Probability: 1.00
+2025/05/28 00:02:32 Detected text: DD, Probability: 1.00
+2025/05/28 00:03:07 Scanned at: 2025-05-28T00:03:07.503297
+2025/05/28 00:03:07 Detected text: 4, Probability: 0.89
+2025/05/28 00:03:07 Detected text: 1185, Probability: 1.00
+2025/05/28 00:03:07 Detected text: DD, Probability: 1.00
+2025/05/28 00:18:11 Scanned at: 2025-05-28T00:18:11.969703
+2025/05/28 00:18:11 Detected text: 4, Probability: 0.89
+2025/05/28 00:18:11 Detected text: 1185, Probability: 1.00
+2025/05/28 00:18:11 Detected text: DD, Probability: 1.00
+2025/05/28 00:18:49 Scanned at: 2025-05-28T00:18:49.049122
+2025/05/28 00:18:49 Detected text: 4, Probability: 0.89
+2025/05/28 00:18:49 Detected text: 1185, Probability: 1.00
+2025/05/28 00:18:49 Detected text: DD, Probability: 1.00
+2025/05/28 00:19:34 Scanned at: 2025-05-28T00:19:34.978608
+2025/05/28 00:19:34 Detected text: 4, Probability: 0.89
+2025/05/28 00:19:34 Detected text: 1185, Probability: 1.00
+2025/05/28 00:19:34 Detected text: DD, Probability: 1.00
+2025/05/28 00:21:08 Scanned at: 2025-05-28T00:21:08.986593
+2025/05/28 00:21:08 Detected text: 4, Probability: 0.89
+2025/05/28 00:21:08 Detected text: 1185, Probability: 1.00
+2025/05/28 00:21:08 Detected text: DD, Probability: 1.00
+2025/05/28 00:34:47 Scanned at: 2025-05-28T00:34:47.082856
+2025/05/28 00:34:47 Detected text: 4, Probability: 0.89
+2025/05/28 00:34:47 Detected text: 1185, Probability: 1.00
+2025/05/28 00:34:47 Detected text: DD, Probability: 1.00
+2025/05/28 08:43:44 Scanned at: 2025-05-28T08:43:44.041632
+2025/05/28 08:43:44 Detected text: 4, Probability: 0.89
+2025/05/28 08:43:44 Detected text: 1185, Probability: 1.00
+2025/05/28 08:43:44 Detected text: DD, Probability: 1.00
+2025/05/29 18:32:18 Scanned at: 2025-05-29T18:32:18.958429
+2025/05/29 18:32:18 Detected text: 4, Probability: 0.89
+2025/05/29 18:32:18 Detected text: 1185, Probability: 1.00
+2025/05/29 18:32:18 Detected text: DD, Probability: 1.00
+2025/05/29 18:32:32 Scanned at: 2025-05-29T18:32:32.895178
+2025/05/29 18:32:32 Detected text: 4, Probability: 0.89
+2025/05/29 18:32:32 Detected text: 1185, Probability: 1.00
+2025/05/29 18:32:32 Detected text: DD, Probability: 1.00
+2025/05/29 18:33:01 Scanned at: 2025-05-29T18:33:01.812416
+2025/05/29 18:33:01 Detected text: 4, Probability: 0.89
+2025/05/29 18:33:01 Detected text: 1185, Probability: 1.00
+2025/05/29 18:33:01 Detected text: DD, Probability: 1.00
+2025/05/29 18:33:38 Scanned at: 2025-05-29T18:33:38.178678
+2025/05/29 18:33:38 Detected text: 4, Probability: 0.89
+2025/05/29 18:33:38 Detected text: 1185, Probability: 1.00
+2025/05/29 18:33:38 Detected text: DD, Probability: 1.00

@@ -5,6 +5,11 @@ type CreateRoleResponse struct {
 	Name string `json:"name"`
 }
 
+type CreateKendaraanResponse struct {
+	ID             uint   `json:"id"`
+	JenisKendaraan string `json:"jenis_kendaraan"`
+}
+
 type CreateMemberResponse struct {
 	ID                uint   `json:"id"`
 	NomorPolisi       string `json:"nomor_polisi"`

@@ -38,3 +38,17 @@ func MemberRoutes(r *gin.RouterGroup) {
 func StrukRoutes(r *gin.RouterGroup) {
 	r.POST("/struk", middleware.ValidateToken, controllers.CreateStruk)
 }
+
+func OcrRoutes(r *gin.RouterGroup) {
+	r.POST("/fetch-ocr-data", controllers.FetchDataFromPython)
+}
+
+func NotificationRoutes(r *gin.RouterGroup) {
+	r.GET("/ws", controllers.HandleWebSocket)
+	r.POST("/fetch-data", controllers.FetchDataFromPython)
+}
+
+func JenisKendaraanRoutes(r *gin.RouterGroup) {
+	r.POST("/jenis-kendaraan", controllers.CreateJenisKendaraan)
+	r.GET("/jenis-kendaraan", controllers.ShowAllJenisKendaraan)
+}
