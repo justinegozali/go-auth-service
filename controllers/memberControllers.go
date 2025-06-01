@@ -152,12 +152,11 @@ func PaginatedMember(c *gin.Context) {
 	limitStr := c.Query("limit")
 
 	params := c.Request.URL.Query()
-
 	formattedParams := make(map[string]interface{})
 
 	for key, vals := range params {
 		if key == "limit" || key == "page" {
-			continue // exclude pagination params
+			continue
 		}
 		if len(vals) == 0 {
 			continue
@@ -170,7 +169,7 @@ func PaginatedMember(c *gin.Context) {
 		} else if value == "false" {
 			formattedParams[key] = false
 		} else {
-			formattedParams[key] = value
+			formattedParams[key] = "%" + value + "%"
 		}
 	}
 
@@ -193,7 +192,18 @@ func PaginatedMember(c *gin.Context) {
 
 	offset := (page - 1) * limit
 
-	if err := config.DB.Table("member_view").Where(formattedParams).Count(&totalMembers).Error; err != nil {
+	dbQuery := config.DB.Table("member_view")
+
+	for key, value := range formattedParams {
+		if strValue, ok := value.(string); ok {
+			dbQuery = dbQuery.Where(key+" LIKE ?", strValue)
+		} else {
+			dbQuery = dbQuery.Where(key+" = ?", value)
+		}
+	}
+
+	// Count total members
+	if err := dbQuery.Count(&totalMembers).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching total members count",
 			"data":    nil,
@@ -201,7 +211,8 @@ func PaginatedMember(c *gin.Context) {
 		return
 	}
 
-	if err := config.DB.Table("member_view").Where(formattedParams).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
+	// Fetch paginated members
+	if err := dbQuery.Offset(offset).Limit(limit).Find(&members).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error fetching data",
 			"data":    nil,
@@ -220,3 +231,80 @@ func PaginatedMember(c *gin.Context) {
 		},
 	})
 }
+
+// func PaginatedMember(c *gin.Context) {
+// 	var members []models.MemberView
+// 	var totalMembers int64
+
+// 	pageStr := c.Query("page")
+// 	limitStr := c.Query("limit")
+
+// 	params := c.Request.URL.Query()
+
+// 	formattedParams := make(map[string]interface{})
+
+// 	for key, vals := range params {
+// 		if key == "limit" || key == "page" {
+// 			continue // exclude pagination params
+// 		}
+// 		if len(vals) == 0 {
+// 			continue
+// 		}
+// 		value := vals[0]
+// 		if intVal, err := strconv.Atoi(value); err == nil {
+// 			formattedParams[key] = intVal
+// 		} else if value == "true" {
+// 			formattedParams[key] = true
+// 		} else if value == "false" {
+// 			formattedParams[key] = false
+// 		} else {
+// 			formattedParams[key] = value
+// 		}
+// 	}
+
+// 	log.Printf("Received query params: %v", formattedParams)
+
+// 	page := 1
+// 	limit := 10
+
+// 	if pageStr != "" {
+// 		if p, err := strconv.Atoi(pageStr); err == nil && p > 0 {
+// 			page = p
+// 		}
+// 	}
+
+// 	if limitStr != "" {
+// 		if l, err := strconv.Atoi(limitStr); err == nil && l > 0 {
+// 			limit = l
+// 		}
+// 	}
+
+// 	offset := (page - 1) * limit
+
+// 	if err := config.DB.Table("member_view").Where(formattedParams).Count(&totalMembers).Error; err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{
+// 			"message": "Error fetching total members count",
+// 			"data":    nil,
+// 		})
+// 		return
+// 	}
+
+// 	if err := config.DB.Table("member_view").Where(formattedParams).Offset(offset).Limit(limit).Find(&members).Error; err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{
+// 			"message": "Error fetching data",
+// 			"data":    nil,
+// 		})
+// 		return
+// 	}
+
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"message": "Successfully fetched data",
+// 		"data":    members,
+// 		"pagination": gin.H{
+// 			"current_page":  page,
+// 			"total_pages":   int(math.Ceil(float64(totalMembers) / float64(limit))),
+// 			"total_members": totalMembers,
+// 			"limit":         limit,
+// 		},
+// 	})
+// }

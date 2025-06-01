@@ -73,23 +73,12 @@ func FetchDataFromPython(c *gin.Context) {
 		return
 	}
 
-	// logFile, err := os.OpenFile("data_log.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	// if err != nil {
-	// 	log.Printf("Failed to open log file: %v", err)
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to open log file"})
-	// 	return
-	// }
-	// defer logFile.Close()
+	fmt.Println("reqq", requestBody)
 
-	// logger := log.New(logFile, "", log.LstdFlags)
-	// logger.Printf("Scanned at: %s\n", requestBody.ScannedAt)
-	// var licensePlates []string
-	// for _, result := range requestBody.Results {
-	// 	logger.Printf("Detected text: %s, Probability: %.2f\n", result.Text, result.Probability)
-	// 	licensePlates = append(licensePlates, result.Text)
-	// }
-
+	// Initialize a slice to hold license plates
 	var licensePlates []models.LogKendaraan
+	var licensePlateNumbers []string // To hold the license plate numbers for logging
+
 	for _, result := range requestBody.Results {
 		licensePlate := models.LogKendaraan{
 			NomorPolisi:  result.Text,
@@ -98,6 +87,8 @@ func FetchDataFromPython(c *gin.Context) {
 			IsHarian:     false,                           // Set default value
 		}
 		licensePlates = append(licensePlates, licensePlate)
+		licensePlateNumbers = append(licensePlateNumbers, result.Text) // Collect license plate numbers
+
 		// Save to database
 		if err := config.DB.Create(&licensePlate).Error; err != nil {
 			log.Printf("Failed to save license plate to database: %v", err)
@@ -106,17 +97,50 @@ func FetchDataFromPython(c *gin.Context) {
 		}
 	}
 
-	var licensePlateNumbers []string
-	for _, lp := range licensePlates {
-		licensePlateNumbers = append(licensePlateNumbers, lp.NomorPolisi)
-	}
+	// Join license plate numbers into a single string
+	joinedLicensePlates := strings.Join(licensePlateNumbers, " ")
+
+	// Log the joined license plate numbers
+	log.Printf("Detected license plates: %s", joinedLicensePlates)
 
 	response := gin.H{
 		"scannedAt":    requestBody.ScannedAt,
-		"licensePlate": strings.Join(licensePlateNumbers, " "),
+		"licensePlate": joinedLicensePlates,
 	}
 
 	NotifyClients(fmt.Sprintf("New data received: %s", response))
 
 	c.JSON(http.StatusOK, response)
+}
+
+func StoreNotification(c *gin.Context) {
+	var notification models.Notification
+	if err := c.ShouldBindBodyWithJSON(&notification); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := config.DB.Create(&notification).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create role"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, notification)
+}
+
+func GetNotificationList(c *gin.Context) {
+	var notifications []models.Notification
+	params := c.Request.URL.Query()
+
+	if err := config.DB.Find(&notifications).Where(&params).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error fetching notification",
+			"data":    nil,
+		})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Notification fetched successfully",
+		"data":    notifications,
+	})
 }

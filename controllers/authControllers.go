@@ -100,7 +100,7 @@ func Authenticate(c *gin.Context) {
 	// Access token
 	accesstoken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": existingUser.ID,
-		"exp": time.Now().Add(10 * time.Minute).Unix(),
+		"exp": time.Now().Add(30 * time.Minute).Unix(),
 	})
 
 	// Refresh token

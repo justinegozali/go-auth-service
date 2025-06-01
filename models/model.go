@@ -28,7 +28,7 @@ type Member struct {
 	TarifBulanan      int       `json:"tarif_bulanan"`
 	Keterangan        string    `json:"keterangan"`
 	IsBlackList       bool      `gorm:"default:false" json:"is_black_list"`
-	TanggalKadaluarsa string    `gorm:"type:date" json:"tanggal_kadaluarsa"`
+	TanggalKadaluarsa string    `json:"tanggal_kadaluarsa"`
 	IsActive          bool      `gorm:"default:true" json:"is_active"`
 	WarnaKendaraan    string    `json:"warna_kendaraan"`
 	KendaraanId       uint      `json:"kendaraan_id"`
@@ -42,13 +42,17 @@ type StrukMember struct {
 	NomorPolisi          string `json:"nomor_polisi"`
 	NamaPemilik          string `json:"nama_pemilik"`
 	TanggalMasuk         string `json:"tanggal_masuk"`
-	KadaluarsaSebelumnya string `gorm:"type:date" json:"kadaluarsa_sebelumnya"`
-	KadaluarsaBerikutnya string `gorm:"type:date" json:"kadaluarsa_berikutnya"`
+	KadaluarsaSebelumnya string `json:"kadaluarsa_sebelumnya"`
+	KadaluarsaBerikutnya string `json:"kadaluarsa_berikutnya"`
 	TarifBulanan         int    `json:"tarif_bulanan"`
 	TanggalBayar         string `json:"tanggal_bayar"`
 	JangkaWaktu          int    `json:"jangka_waktu"`
 	JumlahPembayaran     int    `json:"jumlah_pembayaran"`
 	Keterangan           string `json:"keterangan"`
+	KodeKupon            string `json:"kode_kupon"`
+	IsKuponUsed          bool   `gorm:"default:false" json:"is_kupon_used"`
+	PotonganHarga        int    `json:"potongan_harga"`
+	KadaluarsaKupon      string `json:"kadaluarsa_kupon"`
 }
 
 type UserRoleView struct {
@@ -68,7 +72,7 @@ type MemberView struct {
 	TarifBulanan      int    `json:"tarif_bulanan"`
 	Keterangan        string `json:"keterangan"`
 	IsBlackList       bool   `gorm:"default:false" json:"is_black_list"`
-	TanggalKadaluarsa string `gorm:"type:date" json:"tanggal_kadaluarsa"`
+	TanggalKadaluarsa string `json:"tanggal_kadaluarsa"`
 	IsActive          bool   `gorm:"default:true" json:"is_active"`
 	WarnaKendaraan    string `json:"warna_kendaraan"`
 	JenisKendaraan    string `json:"jenis_kendaraan"`

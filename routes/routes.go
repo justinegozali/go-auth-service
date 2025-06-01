@@ -37,6 +37,8 @@ func MemberRoutes(r *gin.RouterGroup) {
 
 func StrukRoutes(r *gin.RouterGroup) {
 	r.POST("/struk", middleware.ValidateToken, controllers.CreateStruk)
+	r.GET("/kupon", controllers.CekKupon)
+	r.PUT("/struk/:id", controllers.EditStruk)
 }
 
 func OcrRoutes(r *gin.RouterGroup) {
@@ -46,6 +48,8 @@ func OcrRoutes(r *gin.RouterGroup) {
 func NotificationRoutes(r *gin.RouterGroup) {
 	r.GET("/ws", controllers.HandleWebSocket)
 	r.POST("/fetch-data", controllers.FetchDataFromPython)
+	r.POST("/notification-storage", controllers.StoreNotification)
+	r.GET("/notification-storage", controllers.GetNotificationList)
 }
 
 func JenisKendaraanRoutes(r *gin.RouterGroup) {
