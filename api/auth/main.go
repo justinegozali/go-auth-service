@@ -43,6 +43,15 @@ func init() {
 
 	strukRoutes := router.Group("/struk-service")
 	routes.StrukRoutes(strukRoutes)
+
+	ocrRoutes := router.Group("/ocr-service")
+	routes.OcrRoutes(ocrRoutes)
+
+	notificationRoutes := router.Group("/notification")
+	routes.NotificationRoutes(notificationRoutes)
+
+	jenisKendaraanRoutes := router.Group("/jenis-kendaraan-service")
+	routes.JenisKendaraanRoutes(jenisKendaraanRoutes)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
