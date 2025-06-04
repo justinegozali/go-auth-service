@@ -75,8 +75,15 @@ func CekKupon(c *gin.Context) {
 	}
 
 	for _, s := range struk {
-		// Parse the KadaluarsaKupon string to time.Time
-		kadaluarsa, err := time.Parse("2006-01-02", s.KadaluarsaKupon) // Adjust the layout as needed
+		if s.IsKuponUsed {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Kupon has already been used",
+				"data":    nil,
+			})
+			return
+		}
+
+		kadaluarsa, err := time.Parse("2006-01-02", s.KadaluarsaKupon)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": "Error parsing expiration date",
