@@ -87,11 +87,13 @@ type LogKendaraan struct {
 }
 
 type Notification struct {
-	ID           uint   `gorm:"primaryKey" json:"id"`
-	UserId       int    `json:"user_id"`
-	User         User   `gorm:"foreignKey:UserId" json:"-"`
-	IsRead       bool   `gorm:"default:false" json:"is_read"`
-	NomorPolisi  string `json:"nomor_polisi"`
-	JamMasuk     string `json:"jam_masuk"`
-	TanggalMasuk string `json:"tanggal_masuk"`
+	ID           uint         `gorm:"primaryKey" json:"id"`
+	UserId       int          `json:"user_id"`
+	User         User         `gorm:"foreignKey:UserId" json:"-"`
+	IsRead       bool         `gorm:"default:false" json:"is_read"`
+	NomorPolisi  string       `json:"nomor_polisi"`
+	JamMasuk     string       `json:"jam_masuk"`
+	TanggalMasuk string       `json:"tanggal_masuk"`
+	LogId        int          `json:"log_id"`
+	LogKendaraan LogKendaraan `gorm:"foreignKey:LogId" json:"-"`
 }

@@ -50,6 +50,8 @@ func NotificationRoutes(r *gin.RouterGroup) {
 	r.POST("/fetch-data", controllers.FetchDataFromPython)
 	r.POST("/notification-storage", controllers.StoreNotification)
 	r.GET("/notification-storage", controllers.GetNotificationList)
+	r.PUT("/update-log/:id", controllers.UpdateLogStatus)
+	r.PUT("/update-notification/:id", controllers.UpdateNotificationStatus)
 }
 
 func JenisKendaraanRoutes(r *gin.RouterGroup) {
